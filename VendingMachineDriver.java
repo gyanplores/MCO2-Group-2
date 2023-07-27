@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class VendingMachineDriver {
     public static void main(String[] args){
-        int snumber, inumber, menu, feature, vendingMachineChoice, testingMachine, choice, enterMoneyChoice, buyMenu, pass, maintenanceMenu, restockselect, stockselect, changeprice;
+        int snumber, inumber, menu, feature, vendingMachineChoice, testMachine, choice, enterMoneyChoice, buyMenu, pass, maintenanceMenu, restockselect, stockselect, changeprice;
         float price, calories;
         boolean enterMoney, key;
         String name;
@@ -22,64 +22,7 @@ public class VendingMachineDriver {
                     vendingMachineChoice = scan.nextInt();
                     switch (vendingMachineChoice) {
                         case 1:             //prototype, lacks conditions and condition loop
-                            printSlotRequest();
-                            snumber = scan.nextInt();
-
-                            Slot[] slots = new Slot[snumber];
-                            one = new VendingMachine(slots);
-
-                            printItemRequest();
-                            inumber = scan.nextInt();
-                            Item[] items = new Item[snumber];
-
-                            do {
-                                printIItemDistribution();
-                                choice = scan.nextInt();
-                                switch (choice) {
-                                    case 1:
-                                        items[0] = new Item("Spaghetti Pasta", 40, 150);
-                                        items[1] = new Item("Ridged Pasta", 35, 130);
-                                        items[2] = new Item("Fusilli Pasta", 40, 160);
-                                        items[3] = new Item("Red Sauce", 20, 80);
-                                        items[4] = new Item("White Sauce", 30, 90);
-                                        items[5] = new Item("Parmesian Cheese", 50, 100);
-                                        items[6] = new Item("Meat Balls", 60, 200);
-                                        items[7] = new Item("Beef Bits", 50, 180);
-                                    case 2:
-                                        break;
-                                    default:
-                                        System.out.println("Invalid input, please try again.");
-                                }
-                            }while(choice!=1 && choice!=2);
-
-                            for( int i = 0 ; i < snumber ; i++ ){
-                                //slots[i] = new Slot( items[i], inumber );
-                                slots[i].addItem(items[i] , inumber);
-                            }
-                            choice = 0;
-
-                            do{
-                                printCustomizeRequest();
-                                choice = scan.nextInt();
-                                switch(choice){
-                                    case 1:
-                                        one.printProducts();
-                                        one.stockProductsMenu();
-                                        stockselect = scan.nextInt();
-                                        one.stockProductsConfirm(stockselect - 1);
-                                        name = scan.next();
-                                        price = scan.nextFloat();
-                                        calories = scan.nextFloat();
-                                        one.stockProductsFinal(stockselect - 1, name, price, calories);
-                                    case 2:
-                                        break;
-                                    default:
-                                        System.out.println("Invalid input, please try again.");
-                                }
-                            }while(choice!=2);
-
-                            one.printProducts();
-                            System.out.println("Vending machine successfully created!");
+                            one = createRegularVendingMachine(scan, one);
                             break;
                         case 2:
                             System.out.println("This is a work in progress. Sorry for your inconvenience.");
@@ -97,10 +40,11 @@ public class VendingMachineDriver {
                     System.out.println("Vending machine is not created. Please try again.");
                     break;
                 }
+
                 do {
                     printTest();
-                    testingMachine = scan.nextInt();
-                    switch (testingMachine) {
+                    testMachine = scan.nextInt();
+                    switch (testMachine) {
                         case 1:
                             do {
                                 one.printFeatureMenu();
@@ -110,44 +54,13 @@ public class VendingMachineDriver {
                                         one.printProducts();
                                         break;
                                     case 2:
-                                        one.printBuyScreen();
-                                        choice = scan.nextInt();
-                                        if (one.printConfirmation(choice - 1)) {
-                                            buyMenu = scan.nextInt();
-                                            if (buyMenu == 1 && one.priceCheck(choice - 1) && one.quantityCheck(choice - 1) && one.changeCheck(choice - 1)) {
-                                                System.out.println("Successfully Purchased: " + one.getSlots()[choice - 1].getItem().getName());
-                                                one.buyItem(choice - 1);
-                                            } else if (!one.changeCheck(choice - 1)) {
-                                                System.out.println("Vending Machine Does Not Have Enough Change!");
-                                                System.out.println("Please Contact Maintenance Assistant!");
-                                            } else if (!one.priceCheck(choice - 1)) {
-                                                System.out.println("Insufficient Amount!");
-                                                System.out.println("Please Insert more to Proceed");
-                                            } else {
-                                                System.out.println("Item is not in stock!");
-                                                System.out.println("Please Try Again Later");
-                                            }
-                                        }
+                                        buyProducts(scan, one);
                                         break;
                                     case 3:
-                                        do {
-                                            enterMoney = true;
-                                            one.enterMoneyMenu();
-                                            enterMoneyChoice = scan.nextInt();
-                                            if (enterMoneyChoice == 1) {
-                                                one.enterBillsMenu();
-                                                choice = scan.nextInt();
-                                                one.enterBills(choice);
-                                            } else {
-                                                enterMoney = one.enterCoins(enterMoneyChoice);
-                                            }
-                                        } while (enterMoney);
+                                        enterMoney(scan, one);
                                         break;
                                     case 4:
-                                        one.giveChangeConfirm();
-                                        if( scan.nextInt() == 1 ){
-                                            one.giveChange();
-                                        }
+                                        giveChange(scan, one);
                                         break;
                                     case 0:
                                         break;
@@ -171,49 +84,19 @@ public class VendingMachineDriver {
                                 maintenanceMenu = scan.nextInt();
                                 switch (maintenanceMenu) {
                                     case 1:
-                                        one.restockProductsMenu();
-                                        restockselect = one.restockProductsConfirm(scan.nextInt() - 1);
-                                        if (restockselect < 8 && restockselect > -1) {
-                                            if (one.restockProductsFinal(restockselect, scan.nextInt())) {
-                                                System.out.println("Product has been restocked");
-                                            } else {
-                                                System.out.println("Invalid Amount - Reached Max Capacity");
-                                            }
-                                        } else {
-                                            System.out.println("Invalid Selection");
-                                        }
+                                        restockProducts(scan, one);
                                         break;
                                     case 2:
-                                        one.stockProductsMenu();
-                                        stockselect = scan.nextInt();
-                                        one.stockProductsConfirm(stockselect - 1);
-                                        name = scan.next();
-                                        price = scan.nextFloat();
-                                        calories = scan.nextFloat();
-                                        one.stockProductsFinal(stockselect - 1, name, price, calories);
+                                        stockNewProducts(scan, one);
                                         break;
                                     case 3:
-                                        one.changePriceMenu();
-                                        changeprice = scan.nextInt();
-                                        one.changePriceMenuConfirm(changeprice - 1);
-                                        if (one.getSlots()[changeprice - 1].getItem() != null) {
-                                            one.changePriceMenuFinal(changeprice - 1, scan.nextFloat());
-                                        } else {
-                                            System.out.println("Item does not Exist!");
-                                        }
+                                        changePrice(scan, one);
                                         break;
                                     case 4:
-                                            one.collectPayment();
+                                        one.collectPayment();
                                         break;
                                     case 5:
-                                        do{
-                                        one.restockMoneyMenu();
-                                        restockselect = scan.nextInt();
-                                        if( restockselect == 1 || restockselect == 2 || restockselect ==3 || restockselect ==4 ){
-                                            one.restockMoneyDenomination(restockselect);
-                                            one.restockMoneyFinal(restockselect, scan.nextInt());
-                                            }
-                                        }while( restockselect != 0 );
+                                        restockMoney(scan, one);
                                         break;
                                     case 6:
                                         one.printTransactions();
@@ -233,13 +116,168 @@ public class VendingMachineDriver {
                             System.out.println("Invalid Command. Please try again.");
                             break;
                     }
-                }while(testingMachine!=3);
+                }while(testMachine!=3);
             case 3:
                 break;
             }
         } while( menu != 3);
     }
 
+
+
+
+    public static VendingMachine createRegularVendingMachine(Scanner scan, VendingMachine one){
+        printSlotRequest();
+        int choice;
+        int snumber = scan.nextInt();
+
+        Slot[] slots = new Slot[snumber];
+        one = new VendingMachine("hatdog", slots);
+
+        printItemRequest();
+        int inumber = scan.nextInt();
+        Item[] items = new Item[snumber];
+
+        do {
+            printIItemDistribution();
+            choice = scan.nextInt();
+            switch (choice) {
+                case 1:
+                    items[0] = new Item("Spaghetti Pasta", 40, 150);
+                    items[1] = new Item("Ridged Pasta", 35, 130);
+                    items[2] = new Item("Fusilli Pasta", 40, 160);
+                    items[3] = new Item("Red Sauce", 20, 80);
+                    items[4] = new Item("White Sauce", 30, 90);
+                    items[5] = new Item("Parmesian Cheese", 50, 100);
+                    items[6] = new Item("Meat Balls", 60, 200);
+                    items[7] = new Item("Beef Bits", 50, 180);
+                case 2:
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again.");
+            }
+        }while(choice!=1 && choice!=2);
+
+        for( int i = 0 ; i < snumber ; i++ ){
+            slots[i] = new Slot( items[i], inumber );
+        }
+        choice = 0;
+
+        do{
+            printCustomizeRequest();
+            choice = scan.nextInt();
+            switch(choice){
+                case 1:
+                    one.printProducts();
+                    one.stockProductsMenu();
+                    int stockselect = scan.nextInt();
+                    one.stockProductsConfirm(stockselect - 1);
+                    String name = scan.next();
+                    float price = scan.nextFloat();
+                    float calories = scan.nextFloat();
+                    one.stockProductsFinal(stockselect - 1, name, price, calories);
+                case 2:
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again.");
+            }
+        }while(choice!=2);
+
+        one.printProducts();
+        System.out.println("Vending machine successfully created!");
+        return one;
+    }
+
+    public static void buyProducts(Scanner scan, VendingMachine one){
+        one.printBuyScreen();
+        int choice = scan.nextInt();
+        if (one.printConfirmation(choice - 1)) {
+            int buyMenu = scan.nextInt();
+            if (buyMenu == 1 && one.priceCheck(choice - 1) && one.quantityCheck(choice - 1) && one.changeCheck(choice - 1)) {
+                System.out.println("Successfully Purchased: " + one.getSlots()[choice - 1].getItem().getName());
+                one.buyItem(choice - 1);
+            } else if (!one.changeCheck(choice - 1)) {
+                System.out.println("Vending Machine Does Not Have Enough Change!");
+                System.out.println("Please Contact Maintenance Assistant!");
+            } else if (!one.priceCheck(choice - 1)) {
+                System.out.println("Insufficient Amount!");
+                System.out.println("Please Insert more to Proceed");
+            } else {
+                System.out.println("Item is not in stock!");
+                System.out.println("Please Try Again Later");
+            }
+        }
+    }
+
+    public static void enterMoney(Scanner scan, VendingMachine one){
+        boolean enterMoney;
+        do {
+            enterMoney = true;
+            one.enterMoneyMenu();
+            int enterMoneyChoice = scan.nextInt();
+            if (enterMoneyChoice == 1) {
+                one.enterBillsMenu();
+                int choice = scan.nextInt();
+                one.enterBills(choice);
+            } else {
+                enterMoney = one.enterCoins(enterMoneyChoice);
+            }
+        } while (enterMoney);
+    }
+
+    public static void giveChange(Scanner scan, VendingMachine one){
+        one.giveChangeConfirm();
+        if( scan.nextInt() == 1 ){
+            one.giveChange();
+        }
+    }
+
+    public static void restockProducts(Scanner scan, VendingMachine one){
+        one.restockProductsMenu();
+        int restockselect = one.restockProductsConfirm(scan.nextInt() - 1);
+        if (restockselect < 8 && restockselect > -1) {
+            if (one.restockProductsFinal(restockselect, scan.nextInt())) {
+                System.out.println("Product has been restocked");
+            } else {
+                System.out.println("Invalid Amount - Reached Max Capacity");
+            }
+        } else {
+            System.out.println("Invalid Selection");
+        }
+    }
+
+    public static void stockNewProducts(Scanner scan, VendingMachine one){
+        one.stockProductsMenu();
+        int stockselect = scan.nextInt();
+        one.stockProductsConfirm(stockselect - 1);
+        String name = scan.next();
+        float price = scan.nextFloat();
+        float calories = scan.nextFloat();
+        one.stockProductsFinal(stockselect - 1, name, price, calories);
+    }
+
+    public static void changePrice(Scanner scan, VendingMachine one){
+        one.changePriceMenu();
+        int changeprice = scan.nextInt();
+        one.changePriceMenuConfirm(changeprice - 1);
+        if (one.getSlots()[changeprice - 1].getItem() != null) {
+            one.changePriceMenuFinal(changeprice - 1, scan.nextFloat());
+        } else {
+            System.out.println("Item does not Exist!");
+        }
+    }
+
+    public static void restockMoney(Scanner scan, VendingMachine one){
+        int restockselect;
+        do{
+            one.restockMoneyMenu();
+            restockselect = scan.nextInt();
+            if( restockselect == 1 || restockselect == 2 || restockselect ==3 || restockselect ==4 ){
+                one.restockMoneyDenomination(restockselect);
+                one.restockMoneyFinal(restockselect, scan.nextInt());
+            }
+        }while( restockselect != 0 );
+    }
     public static void printSlotRequest(){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
