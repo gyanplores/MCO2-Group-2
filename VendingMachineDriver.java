@@ -2,10 +2,11 @@ import java.util.Scanner;
 
 public class VendingMachineDriver {
     public static void main(String[] args){
-        int snumber, inumber, menu, feature, vendingMachineChoice, testMachine, choice, enterMoneyChoice, buyMenu, pass, maintenanceMenu, restockselect, stockselect, changeprice;
-        float price, calories;
-        boolean enterMoney, key;
-        String name;
+        int menu, feature, vendingMachineChoice, testMachine, pass, maintenanceMenu;
+        boolean key;
+        Item[] specitems = new Item[10];
+        Slot[] specslots = new Slot[10];
+
         Scanner scan = new Scanner(System.in);
 
         VendingMachine one = null;
@@ -25,7 +26,27 @@ public class VendingMachineDriver {
                             one = createRegularVendingMachine(scan, one);
                             break;
                         case 2:
-                            System.out.println("This is a work in progress. Sorry for your inconvenience.");
+                            VendingMachineController vendingMachineController;
+
+                            VendingMachineView vendingMachineView = new VendingMachineView();
+                            specitems[0] = new Item();
+                            specitems[1] = new Item("Spaghetti Pasta", 40, 150);
+                            specitems[2] = new Item("Ridged Pasta", 35, 130);
+                            specitems[3] = new Item("Fusilli Pasta", 40, 160);
+                            specitems[4] = new Item("Red Sauce", 20, 80);
+                            specitems[5] = new Item("White Sauce", 30, 90);
+                            specitems[6] = new Item("Pesto Sauce", 50, 100);
+                            specitems[7] = new Item("Meat Balls", 60, 200);
+                            specitems[8] = new Item("Beef Bits", 50, 180);
+                            specitems[9] = new Item("Hot Dogs", 20, 160);
+
+                            for(int j = 0; j < specslots.length; j++) {
+                                specslots[j] = new Slot();
+                                specslots[j].addItem(specitems[j],10);
+                            }
+
+                            SpecialVendingMachineModel specialVendingMachine = new SpecialVendingMachineModel(specslots);
+                            vendingMachineController = new VendingMachineController(vendingMachineView, specialVendingMachine);
                             break;
                         case 3:
                             break;
@@ -158,8 +179,9 @@ public class VendingMachineDriver {
             }
         }while(choice!=1 && choice!=2);
 
-        for( int i = 0 ; i < snumber ; i++ ){
-            slots[i] = new Slot( items[i], inumber );
+        for(int j = 0; j < 8; j++) {
+            slots[j] = new Slot();
+            slots[j].addItem(items[j],10);
         }
         choice = 0;
 
@@ -167,15 +189,15 @@ public class VendingMachineDriver {
             printCustomizeRequest();
             choice = scan.nextInt();
             switch(choice){
-                case 1:
-                    one.printProducts();
+                case 1: //////////////////////////////////Not working
                     one.stockProductsMenu();
                     int stockselect = scan.nextInt();
                     one.stockProductsConfirm(stockselect - 1);
                     String name = scan.next();
                     float price = scan.nextFloat();
                     float calories = scan.nextFloat();
-                    one.stockProductsFinal(stockselect - 1, name, price, calories);
+                    items[stockselect-1] = new Item(name, price, calories);
+                    one.stockProductsFinal(stockselect - 1, items[stockselect-1], 9);
                 case 2:
                     break;
                 default:
@@ -242,18 +264,19 @@ public class VendingMachineDriver {
                 System.out.println("Invalid Amount - Reached Max Capacity");
             }
         } else {
-            System.out.println("Invalid Selection");
+            System.out.println("Invalid Selection/Item slot is empty. Please try again");
         }
     }
 
-    public static void stockNewProducts(Scanner scan, VendingMachine one){
-        one.stockProductsMenu();
+    public static void stockNewProducts(Scanner scan, VendingMachine one){ //not working
+    /*    one.stockProductsMenu();
         int stockselect = scan.nextInt();
         one.stockProductsConfirm(stockselect - 1);
         String name = scan.next();
         float price = scan.nextFloat();
         float calories = scan.nextFloat();
-        one.stockProductsFinal(stockselect - 1, name, price, calories);
+        Item[] items[ stockselect] = new Item(name, price, calories);
+        one.stockProductsFinal(stockselect - 1, items[stockselect-1], 9);*/
     }
 
     public static void changePrice(Scanner scan, VendingMachine one){
