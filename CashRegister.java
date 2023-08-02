@@ -1,6 +1,15 @@
 import java.util.*;
+
+/**
+ * This class is responsible for managing transactions regarding the money of the vending machine and the user.
+ *
+ * @author Group 2(Flores, Ranigo)
+ */
 public class CashRegister {
 
+    /**
+     * The constructor is used for initializing the types of money for each transaction. This includes bills and coins.
+     */
     CashRegister(){
         oneCoin = new ArrayList<Coin>();
         fiveCoin = new ArrayList<Coin>();
@@ -17,6 +26,11 @@ public class CashRegister {
         userMoney = 0;
     }
 
+    /**
+     * This method is mainly for adding balance to the user using denominations(coins and bills).
+     * @param select The type of denomination used(1 peso coin, 20 peso bill, and more).
+     * @param amount This is the amount regarding in quantity(eg. 20 50 peso bills).
+     */
     public void addDenomination( int select, int amount ){
         for( int i = 0; i < amount; i++ ){
             switch (select) {
@@ -75,6 +89,12 @@ public class CashRegister {
         updateTotalCash();
     }
 
+    /**
+     * This method checks if the item is available for sale.
+     * @param price The price of the item selected.
+     * @param sizeofItem The amount of quantity of items stored in the slot.
+     * @return True if there is an item stored and the user's balance is above the item price, false otherwise.
+     */
     public boolean buyCheck( double price , int sizeofItem){
         if( userMoney - price >= 0 ){
             return sizeofItem > 0;
@@ -83,6 +103,11 @@ public class CashRegister {
         }
     }
 
+    /**
+     * This method commences the transaction of buying a product and reduces the user's balance.
+     * @param price The price of the item selected.
+     * @param sizeofItem The amount of quantity of items stored in the slot.
+     */
     public void buyProduct( double price, int sizeofItem ){
         if( buyCheck( price, sizeofItem ) ){
             revenue = revenue + price;
@@ -92,6 +117,11 @@ public class CashRegister {
         }
     }
 
+    /**
+     * This method is responsible for managing the amount of change for the user.
+     * @param change The amount of money the user has as change.
+     * @return True if the vending machine can give  the exact change, false otherwise.
+     */
     public boolean changeCheck( double change ){
         int val;
 
@@ -139,6 +169,11 @@ public class CashRegister {
         return change == 0;
     }
 
+    /**
+     * This method is responsible for printing out change.
+     * @param list This is the list of the type of denominations used.
+     * @param value This is the total amount of change.
+     */
     public void changePrint( int[] list, double value ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n" );
@@ -158,6 +193,9 @@ public class CashRegister {
         System.out.println("-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method is responsible for dispensing change. This removes the denominations inside the vending machine.
+     */
     public void giveChange( ){
         int[] list = new int[10];
         int val;
@@ -288,6 +326,9 @@ public class CashRegister {
         updateTotalCash();
     }
 
+    /**
+     * This method is responsible for updating the total amount of money inside the vending machine.
+     */
     public void updateTotalCash(){
         totalCash = getOneCoin();
         totalCash = getFiveCoin() * 5 + totalCash;
@@ -301,18 +342,82 @@ public class CashRegister {
         totalCash = getThousandBill() * 1000 + totalCash;
     }
 
+    /**
+     * The method returns the amount of 1 peso coin.
+     * @return 1 peso coin denomination.
+     */
     public int getOneCoin(){return oneCoin.size();}
+
+    /**
+     * The method returns the amount of 5 peso coin.
+     * @return 5 peso coin denomination.
+     */
     public int getFiveCoin(){return fiveCoin.size();}
+
+    /**
+     * The method returns the amount of 10 peso coin.
+     * @return 10 peso coin denomination.
+     */
     public int getTenCoin(){return tenCoin.size();}
+
+    /**
+     * The method returns the amount of 20 peso coin.
+     * @return 20 peso coin denomination.
+     */
     public int getTwentyCoin(){return twentyCoin.size();}
+
+    /**
+     * The method returns the amount of 20 peso bills.
+     * @return 20 peso bills.
+     */
     public int getTwentyBill(){return twentyBill.size();}
+
+    /**
+     * The method returns the amount of 50 peso bills.
+     * @return 50 peso bills.
+     */
     public int getFiftyBill(){return fiftyBill.size();}
+
+    /**
+     * The method returns the amount of 100 peso bills.
+     * @return 100 peso bills.
+     */
     public int getHundredBill(){return hundredBill.size();}
+
+    /**
+     * The method returns the amount of 200 peso bills.
+     * @return 200 peso bills.
+     */
     public int getTwoHundredBill(){return twohunBill.size();}
+
+    /**
+     * The method returns the amount of 500 peso bills.
+     * @return 500 peso bills.
+     */
     public int getFiveHundredBill(){return fivehunBill.size();}
+
+    /**
+     * The method returns the amount of 1000 peso bills.
+     * @return 1000 peso bills.
+     */
     public int getThousandBill(){return thousandBill.size();}
+
+    /**
+     * The method returns the total amount of vending machine balance.
+     * @return The amount of balance vending machine has.
+     */
     public double getTotalCash(){return totalCash;}
+
+    /**
+     * This method returns all money from profits.
+     * @return The amount of revenue money.
+     */
     public double getRevenue(){return revenue;}
+
+    /**
+     * This method returns all of the user's money.
+     * @return The user's money balance.
+     */
     public double getUserMoney(){return userMoney;}
 
 

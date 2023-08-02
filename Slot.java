@@ -1,12 +1,27 @@
 import java.util.ArrayList;
 
+/**
+ * This class is responsible for the slots of the vending machine. This is the object where items will be stored in.
+ *
+ * @author Group 2(Flores, Ranigo)
+ */
 public class Slot {
     //Constructors
+
+    /**
+     * The constructor initializes a new array list of items for the vending machine slot.
+     */
     Slot(){
         items = new ArrayList<>();
     }
 
     //Methods
+
+    /**
+     * This method is responsible for adding items inside the slot.
+     * @param item The type of item that will be stored.
+     * @param amount The amount of items to be stored inside the vending machine.
+     */
     public void addItem( Item item, int amount ){
         int i;
 
@@ -16,12 +31,26 @@ public class Slot {
 
     }
 
+    /**
+     * This method is responsible for checking if the slot is empty.
+     * @return True if slot is empty, false otherwise.
+     */
     public boolean isSlotEmpty( ){
         return items.isEmpty();
     }
 
     //Getters
+
+    /**
+     * This method returns the item.
+     * @return Item inside the slot.
+     */
     public Item getItem(){ return items.get(0); }
+
+    /**
+     * This method returns the amount of items inside the slot.
+     * @return Item amount in the slot
+     */
     public int getItemAmount(){ return items.size(); }
 
     //Attributes

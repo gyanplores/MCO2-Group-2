@@ -1,7 +1,7 @@
 /**
  * This class is responsible for the characteristics of the item.
  *
- * @author Flores
+ * @author Group 2(Flores, Ranigo)
  */
 public class Item {
     /**
@@ -37,15 +37,24 @@ public class Item {
      */
     public float getCalories(){ return calories; }
 
+    /**
+     * This method accepts name and assigns it to the name object.
+     * @param name The name of the item
+     */
     public void setName( String name ){ this.name = name;}
 
     /**
      * This method accepts price and assigns it to the price object.
-     * @param price
+     * @param price The price of the item
      */
     public void setPrice( float price ){ this.price = price; }
 
+    /**
+     * This method accepts calories and assigns it to the price object.
+     * @param calories The calories of the item.
+     */
     public void setCalories( float calories ){ this.calories = calories;}
+
 
     private String name;
     private float price;

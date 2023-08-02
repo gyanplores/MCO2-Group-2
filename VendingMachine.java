@@ -1,11 +1,25 @@
+/**
+ * This class is responsible for functioning as the vessel for a vending machine.
+ *
+ * @author Group 2(Flores, Ranigo)
+ */
 public class VendingMachine {
     //Constructors
+
+    /**
+     * This construction initializes the vending machine slots and creates a new case register.
+     * @param slots Slots for the vending machine.
+     */
     VendingMachine( Slot[] slots ){
         this.slots = slots;
         cashregister = new CashRegister();
     }
 
     //Methods
+
+    /**
+     * This method is responsible for printing the feature menu and the balance of the user and the vending machine.
+     */
     public void printFeatureMenu(){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
@@ -20,6 +34,9 @@ public class VendingMachine {
         System.out.println( "-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method is responsible for printing the current products and its details in the vending machine.
+     */
     public void printProducts(){
         int i;
         System.out.println( "-------------------------------------------" );
@@ -41,6 +58,9 @@ public class VendingMachine {
         System.out.println( "-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method is responsible for printing the buying of a item from a slot.
+     */
     public void printBuyScreen(){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
@@ -50,6 +70,11 @@ public class VendingMachine {
         System.out.println( "-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method prints the attributes of the item selected and the confirmation for buying that item.
+     * @param index The slot number selected.
+     * @return True if item exits, false otherwise.
+     */
     public boolean printConfirmation(int index) {
         if (slots[index].getItem() == null) {
             System.out.println("Item Does not Exist!");
@@ -72,6 +97,9 @@ public class VendingMachine {
         }
     }
 
+    /**
+     * This method prints the types of denominations to be inserted.
+     */
     public void enterMoneyMenu( ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
@@ -90,7 +118,7 @@ public class VendingMachine {
         System.out.println("\n\n-------------------------------------------");
         System.out.println("-------------------------------------------\n\n");
     }
-
+//////////////////////Will this method be used?
     public void enterAmountMenu( ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
@@ -102,6 +130,9 @@ public class VendingMachine {
 
     //Maintenance Menu Methods
 
+    /**
+     * This method prints the prompt for logging in to maintenance.
+     */
     public void maintenanceLogin( ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
@@ -110,6 +141,9 @@ public class VendingMachine {
         System.out.println("-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method prints the menu for the maintenance features.
+     */
     public void maintenanceMenu(  ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n");
@@ -125,6 +159,9 @@ public class VendingMachine {
         System.out.println("-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method prints the prompt for restocking items in a slot number.
+     */
     public void restockProductsMenu( ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n" );
@@ -134,6 +171,11 @@ public class VendingMachine {
         System.out.println("-------------------------------------------\n\n" );
     }
 
+    /**
+     * This method prints the name and quantity of the current item in the slot and the quantity to be added.
+     * @param index The index number of the slot.
+     * @return The index number as well.
+     */
     public int restockProductsConfirm( int index ){
         System.out.println( "-------------------------------------------" );
         System.out.println( "-------------------------------------------"+"\n\n" );
@@ -146,11 +188,20 @@ public class VendingMachine {
     }
 
 
-
     //Getters
+
+    /**
+     * This method returns the slots of the vending machine.
+     * @return Vending machine slots.
+     */
     public Slot[] getSlots(){return slots;}
+
+    /**
+     * This method returns the cash register of the vending machine.
+     * @return Vending machine cash register.
+     */
     public CashRegister getCashregister(){return cashregister;}
 
-    private Slot[] slots;
+    protected Slot[] slots;
     private CashRegister cashregister;
 }
