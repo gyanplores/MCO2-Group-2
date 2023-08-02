@@ -15,6 +15,17 @@ public class Item {
         this.name = name;
         this.price = price;
         this.calories = calories;
+        qtysold = 0;
+    }
+
+    /**
+     * This constructor initializes the custom pasta
+     */
+    public Item(){
+        this.name = "Custom Pasta";
+        this.price = 0;
+        this.calories = 0;
+        qtysold = 0;
     }
 
     // Getter and Setters
@@ -38,6 +49,17 @@ public class Item {
     public float getCalories(){ return calories; }
 
     /**
+     * This method returns independence of the item.
+     * @return Item independence.
+     */
+    public boolean getIndependence(){ return independence; }
+
+    /**
+     *This method returns the quantity sold for an item.
+     * @return Quantity sold.
+     */
+    public int getQtySold(){return qtysold;}
+    /**
      * This method accepts name and assigns it to the name object.
      * @param name The name of the item
      */
@@ -55,8 +77,18 @@ public class Item {
      */
     public void setCalories( float calories ){ this.calories = calories;}
 
+    /**
+     * This method accepts calories and assigns it to the price object.
+     * @param independence The independence of the item.
+     */
+    public void setIndependence( boolean independence){ this.independence = independence;}
 
     private String name;
     private float price;
     private float calories;
+    private boolean independence;
+
+    private int qtysold;
+
+
 }
