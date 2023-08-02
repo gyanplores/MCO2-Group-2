@@ -1,5 +1,4 @@
 import java.util.*;
-
 /**
  * This class is responsible for managing transactions regarding the money of the vending machine and the user.
  *
@@ -24,68 +23,57 @@ public class CashRegister {
         totalCash = 0;
         revenue = 0;
         userMoney = 0;
+        cashSold = 0;
     }
 
     /**
      * This method is mainly for adding balance to the user using denominations(coins and bills).
      * @param select The type of denomination used(1 peso coin, 20 peso bill, and more).
-     * @param amount This is the amount regarding in quantity(eg. 20 50 peso bills).
      */
-    public void addDenomination( int select, int amount ){
-        for( int i = 0; i < amount; i++ ){
+    public void addDenomination( int select ){
             switch (select) {
                 case 1 -> {
                     oneCoin.add(new Coin(1));
-                    totalCash = (amount) + totalCash;
-                    userMoney = (amount) + userMoney;
+                    userMoney = 1 + userMoney;
                 }
                 case 2 -> {
                     fiveCoin.add(new Coin(5));
-                    totalCash = (5 * amount) + totalCash;
-                    userMoney = (5 * amount) + userMoney;
+                    userMoney = 5 + userMoney;
                 }
                 case 3 -> {
                     tenCoin.add(new Coin(10));
-                    totalCash = (10 * amount) + totalCash;
-                    userMoney = (10 * amount) + userMoney;
+                    userMoney = 5 + userMoney;
                 }
                 case 4 -> {
                     twentyCoin.add(new Coin(20));
-                    totalCash = (20 * amount) + totalCash;
-                    userMoney = (20 * amount) + userMoney;
+                    userMoney = 20 + userMoney;
                 }
                 case 5 -> {
                     twentyBill.add(new Bill(20));
-                    totalCash = (20 * amount) + totalCash;
-                    userMoney = (20 * amount) + userMoney;
+                  //  totalCash = 20 + totalCash;
+                    userMoney = 20  + userMoney;
                 }
                 case 6 -> {
                     fiftyBill.add(new Bill(50));
-                    totalCash = (50 * amount) + totalCash;
-                    userMoney = (50 * amount) + userMoney;
+                    userMoney = 50 + userMoney;
                 }
                 case 7 -> {
                     hundredBill.add(new Bill(100));
-                    totalCash = (100 * amount) + totalCash;
-                    userMoney = (100 * amount) + userMoney;
+                    userMoney = 100 + userMoney;
                 }
                 case 8 -> {
                     twohunBill.add(new Bill(200));
-                    totalCash = (200 * amount) + totalCash;
-                    userMoney = (200 * amount) + userMoney;
+                    userMoney = 200 + userMoney;
                 }
                 case 9 -> {
                     fivehunBill.add(new Bill(500));
-                    totalCash = (500 * amount) + totalCash;
-                    userMoney = (500 * amount) + userMoney;
+                    userMoney = 500 + userMoney;
                 }
                 case 10 -> {
                     thousandBill.add(new Bill(1000));
-                    totalCash = (1000 * amount) + totalCash;
-                    userMoney = (1000 * amount) + userMoney;
+                    userMoney = 1000 + userMoney;
                 }
             }
-        }
         updateTotalCash();
     }
 
@@ -106,15 +94,10 @@ public class CashRegister {
     /**
      * This method commences the transaction of buying a product and reduces the user's balance.
      * @param price The price of the item selected.
-     * @param sizeofItem The amount of quantity of items stored in the slot.
      */
-    public void buyProduct( double price, int sizeofItem ){
-        if( buyCheck( price, sizeofItem ) ){
+    public void buyProduct( double price ){
             revenue = revenue + price;
             userMoney = userMoney - price;
-        }else{
-            System.out.println( "Unable to Buy Item: Not Enough Money OR Item not in Stock!" );
-        }
     }
 
     /**
@@ -196,7 +179,7 @@ public class CashRegister {
     /**
      * This method is responsible for dispensing change. This removes the denominations inside the vending machine.
      */
-    public void giveChange( ){
+    public int[] giveChange( ){
         int[] list = new int[10];
         int val;
         int i;
@@ -322,8 +305,8 @@ public class CashRegister {
             list[9] = 0;
         }
 
-        changePrint( list , placeholder);
         updateTotalCash();
+        return list;
     }
 
     /**
@@ -420,6 +403,13 @@ public class CashRegister {
      */
     public double getUserMoney(){return userMoney;}
 
+    public double getCashSold() {
+        return cashSold;
+    }
+
+    public double setCashSold(double cashSold){
+        return this.cashSold = cashSold;
+    }
 
     private ArrayList<Coin> oneCoin;
     private ArrayList<Coin> fiveCoin;
@@ -434,5 +424,7 @@ public class CashRegister {
     private double totalCash;
     private double revenue;
     private double userMoney;
+    private double cashSold;
+
 
 }
